@@ -2,7 +2,7 @@ import express from "express";
 import {
   blockUser,
   fetchAllUsers,
-} from "../../controllers/admin-controllers/admin-userManagment-controller.js";
+} from "../../controllers/admin-controllers/admin-user-managment-controller.js";
 import authMiddleware from "../../middlewares/authMiddleware.js";
 
 const router = express.Router();

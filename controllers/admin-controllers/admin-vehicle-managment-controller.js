@@ -1,3 +1,4 @@
+import historyModel from "../../models/historyModel.js";
 import userModel from "../../models/userModel.js";
 import vehicleModel from "../../models/vehicleModel.js";
 
@@ -154,21 +155,6 @@ export const doEditVehicle = async (req, res) => {
         rentedUserId,
         returnDate,
       } = req.body;
-      // if (
-      //   vehicle.vehicleName === vehicleName &&
-      //   vehicle.insuranceExpiry === insuranceExpiry &&
-      //   vehicle.registrationNumber === registrationNumber &&
-      //   vehicle.vehicleYear === vehicleYear &&
-      //   vehicle.rate === rate &&
-      //   vehicle.rented === rented &&
-      //   vehicle.rentedBy === rentedBy &&
-      //   vehicle.rentedDate === rentedDate &&
-      //   vehicle.rentedUserId === rentedUserId &&
-      //   vehicle.returnDate === returnDate &&
-      //   vehicle.returnDate === returnDate
-      // ) {
-      //   res.status(200).json({ message: "No changes, eh?" });
-      // }
       const editedVehicle = await vehicleModel.findOneAndUpdate(
         { _id: vehicle._id },
         {
@@ -199,6 +185,81 @@ export const doEditVehicle = async (req, res) => {
       res.status(204).json({
         status: 204,
         message: "Could not get vehicle details, please try again",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "An error occurred. Please try again later." });
+  }
+};
+
+export const returnVehicle = async (req, res) => {
+  try {
+    const { returnedDate, weeks, fines, total } = req.body;
+    const admin = req.user;
+    const vehicle = await vehicleModel.findOne({ _id: req.body.vehicle._id });
+    if (vehicle) {
+      const newHistory = new historyModel({
+        vehicle: vehicle._id,
+        user: vehicle.rentedUserId,
+        rentedDate: vehicle.rentedDate,
+        returnDate: vehicle.returnDate,
+        returnedDate,
+        weeks,
+        fines,
+        total,
+        processedBy: admin._id,
+      });
+      await newHistory.save().then(async () => {
+        vehicle.rented = false;
+        vehicle.rentedDate = undefined;
+        vehicle.returnDate = undefined;
+        vehicle.rentedBy = undefined;
+        vehicle.rentedUserId = undefined;
+        await vehicle.save().then(() => {
+          res
+            .status(200)
+            .json({ status: 200, message: "Vehicle return data added" });
+        });
+      });
+
+      // await Promise.all([newHistory.save(), vehicle.save()]);
+    } else {
+      res.status(201).json({
+        status: 404,
+        message: "Could not get vehicle details. Please try again later",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "An error occurred. Please try again later." });
+  }
+};
+
+export const doDeleteVehicle = async (req, res) => {
+  try {
+    const vehicle = req.params.vehicle;
+    console.log(vehicle);
+    if (vehicle) {
+      await vehicleModel
+        .deleteOne({ registrationNumber: vehicle })
+        .then(() => {
+          res
+            .status(200)
+            .json({ status: 200, message: "Vehicle deleted succesfully" });
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(302).json({ message: "Error while deleting vehicle" });
+        });
+    } else {
+      res.status(201).json({
+        status: 404,
+        message: "Could not get vehicle details. Please try again later",
       });
     }
   } catch (error) {

@@ -13,7 +13,6 @@ export const getAllOrders = async (req, res) => {
       )
       .populate("user", "firstName lastName email")
       .populate("processedBy", "firstName lastName");
-    console.log(orders);
     res.status(200).json({
       status: 200,
       orders: orders,

@@ -6,7 +6,8 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 
 import connection from "./config/dbConnection.js";
-import userAuthRouter from "./routes/user-routes/user-auth.js";
+import userAuthRouter from "./routes/user-routes/user-auth-route.js";
+import userSearchRouter from "./routes/user-routes/user-search-route.js"
 import adminAuthRouter from "./routes/admin-routes/admin-auth-route.js";
 import adminUserManagmentRouter from "./routes/admin-routes/admin-user-managment-route.js";
 import adminVehicleManagmentRouter from "./routes/admin-routes/admin-vehicle-managment-route.js";
@@ -27,6 +28,8 @@ app.use(cookieParser());
 app.use(cors());
 
 app.use("/user", userAuthRouter);
+app.use("/user/search", userSearchRouter);
+
 app.use("/admin", adminAuthRouter);
 app.use("/admin/user", adminUserManagmentRouter);
 app.use("/admin/vehicle", adminVehicleManagmentRouter);

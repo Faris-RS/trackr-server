@@ -59,7 +59,6 @@ export const fetchAllVehicles = async (req, res) => {
 export const rentVehicle = async (req, res) => {
   try {
     const { rentedDate, returnDate, email, selectedVehicle } = req.body;
-    console.log(req.body);
     const userDetails = await userModel.findOne({ email: email });
     const vehicleDetails = await vehicleModel.findOne({
       registrationNumber: selectedVehicle,
@@ -142,7 +141,6 @@ export const doEditVehicle = async (req, res) => {
   try {
     const vehicle = await vehicleModel.findOne({ _id: req.body._id });
     if (vehicle) {
-      console.log(req.body);
       const {
         vehicleName,
         insuranceExpiry,
@@ -243,7 +241,6 @@ export const returnVehicle = async (req, res) => {
 export const doDeleteVehicle = async (req, res) => {
   try {
     const vehicle = req.params.vehicle;
-    console.log(vehicle);
     if (vehicle) {
       await vehicleModel
         .deleteOne({ registrationNumber: vehicle })

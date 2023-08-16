@@ -7,7 +7,10 @@ import dotenv from "dotenv";
 
 import connection from "./config/dbConnection.js";
 import userAuthRouter from "./routes/user-routes/user-auth-route.js";
-import userSearchRouter from "./routes/user-routes/user-search-route.js"
+import userSearchRouter from "./routes/user-routes/user-search-route.js";
+import userOrderRouter from "./routes/user-routes/user-order-route.js";
+import userProfileRouter from "./routes/user-routes/user-profile-route.js";
+import userVehicleRouter from "./routes/user-routes/user-vehicle-router.js";
 import adminAuthRouter from "./routes/admin-routes/admin-auth-route.js";
 import adminUserManagmentRouter from "./routes/admin-routes/admin-user-managment-route.js";
 import adminVehicleManagmentRouter from "./routes/admin-routes/admin-vehicle-managment-route.js";
@@ -29,6 +32,9 @@ app.use(cors());
 
 app.use("/user", userAuthRouter);
 app.use("/user/search", userSearchRouter);
+app.use("/user/orders", userOrderRouter);
+app.use("/user/profile", userProfileRouter);
+app.use("/user/vehicle", userVehicleRouter);
 
 app.use("/admin", adminAuthRouter);
 app.use("/admin/user", adminUserManagmentRouter);

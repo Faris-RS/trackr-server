@@ -15,6 +15,11 @@ const vehicleSchema = new Schema({
   registrationNumber: {
     type: String,
   },
+  photo: {
+    type: String,
+    default:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeJPwIba3Un9Vvkf1LgBUmRcN4PWHzQdzTH-Ab5fnF&s",
+  },
   rate: {
     type: Number,
   },

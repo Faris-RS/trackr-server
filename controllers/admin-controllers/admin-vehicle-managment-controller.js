@@ -1,36 +1,54 @@
 import historyModel from "../../models/historyModel.js";
 import userModel from "../../models/userModel.js";
 import vehicleModel from "../../models/vehicleModel.js";
+import cloudinary from "../../utils/cloudinary.js";
 
 export const addVehicle = async (req, res) => {
   try {
-    const { vehicleName, insuranceExpiry, registrationNumber, rate } =
-      req.body.data;
-    const vehicleYear = Number(req.body.data.vehicleYear);
+    const {
+      vehicleName,
+      insuranceExpiry,
+      vehicleYear,
+      registrationNumber,
+      rate,
+      photo,
+    } = req.body.data;
     const vehicle = await vehicleModel.findOne({
       registrationNumber: registrationNumber,
     });
     if (vehicle) {
       res.status(201).json({ status: 201, message: "Vehicle already added" });
     } else {
-      const newVehicle = new vehicleModel({
-        vehicleName,
-        vehicleYear: Number(vehicleYear),
-        insuranceExpiry,
-        registrationNumber,
-        rate,
-      });
-      await newVehicle
-        .save()
-        .then(() => {
-          res
-            .status(200)
-            .json({ status: 200, message: "Vehicle added succesfully" });
-        })
-        .catch((err) => {
+      await cloudinary.uploader.upload(photo).then(async (result, err) => {
+        if (err) {
           console.error(err);
-          res.status(302).json({ message: "Error while saving new vehicle" });
-        });
+          response.status = false;
+          res.json(response);
+        } else {
+          const image = result.secure_url;
+          const newVehicle = new vehicleModel({
+            vehicleName,
+            vehicleYear: Number(vehicleYear),
+            insuranceExpiry,
+            registrationNumber,
+            rate,
+            photo: image,
+          });
+          await newVehicle
+            .save()
+            .then(() => {
+              res
+                .status(200)
+                .json({ status: 200, message: "Vehicle added succesfully" });
+            })
+            .catch((err) => {
+              console.error(err);
+              res
+                .status(302)
+                .json({ message: "Error while saving new vehicle" });
+            });
+        }
+      });
     }
   } catch (error) {
     console.error(error);

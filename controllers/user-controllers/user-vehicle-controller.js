@@ -1,3 +1,4 @@
+import userModel from "../../models/userModel.js";
 import vehicleModel from "../../models/vehicleModel.js";
 
 export const getAllVehicles = async (req, res) => {
@@ -33,13 +34,10 @@ export const rentVehicle = async (req, res) => {
         { new: true }
       );
       if (updatedVehicleDetails) {
-        res
-          .status(200)
-          .json({
-            status: 200,
-            message:
-              "Rent request recieved. Please check mail for confirmation",
-          });
+        res.status(200).json({
+          status: 200,
+          message: "Rent request recieved. Please check mail for confirmation",
+        });
       } else {
         res
           .status(200)

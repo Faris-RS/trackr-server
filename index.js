@@ -15,6 +15,7 @@ import adminAuthRouter from "./routes/admin-routes/admin-auth-route.js";
 import adminUserManagmentRouter from "./routes/admin-routes/admin-user-managment-route.js";
 import adminVehicleManagmentRouter from "./routes/admin-routes/admin-vehicle-managment-route.js";
 import adminOrderManagmentRouter from "./routes/admin-routes/admin-order-managment-route.js";
+import AdminGraphRouter from "./routes/admin-routes/admin-graph-route.js";
 
 const app = express();
 dotenv.config();
@@ -40,6 +41,7 @@ app.use("/admin", adminAuthRouter);
 app.use("/admin/user", adminUserManagmentRouter);
 app.use("/admin/vehicle", adminVehicleManagmentRouter);
 app.use("/admin/orders", adminOrderManagmentRouter);
+app.use("/admin/graph", AdminGraphRouter);
 
 app.listen(process.env.PORT, () =>
   console.log(`Server started on ${process.env.PORT}`)

@@ -11,6 +11,14 @@ const userSchema = new Schema({
   email: {
     type: String,
   },
+  phone: {
+    type: Number,
+  },
+  image: {
+    type: String,
+    default:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpWvXdcjNuTkrkDCYKZRtWwZ-emiiDJdP6sUb7VRshRA&s",
+  },
   password: {
     type: String,
   },

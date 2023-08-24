@@ -57,14 +57,15 @@ export const signupOTP = async (req, res) => {
 
 export const doSignup = async (req, res) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
-    const otp = req.params.otp
+    const { firstName, lastName, email, password, phone } = req.body;
+    const otp = req.params.otp;
     if (otp === otpVerify) {
       const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new userModel({
         firstName,
         lastName,
         email,
+        phone,
         password: hashedPassword,
       });
       await newUser.save();

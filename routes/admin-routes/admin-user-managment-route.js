@@ -7,7 +7,7 @@ import authMiddleware from "../../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/getAllUsers", fetchAllUsers);
+router.get("/getAllUsers", authMiddleware, fetchAllUsers);
 router.patch("/blockUser", authMiddleware, blockUser);
 
 export default router;
